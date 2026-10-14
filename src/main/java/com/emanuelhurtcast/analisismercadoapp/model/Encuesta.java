@@ -3,6 +3,8 @@ package com.emanuelhurtcast.analisismercadoapp.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "ENCUESTA")
@@ -23,11 +25,25 @@ public class Encuesta {
     @Column(nullable = false)
     private boolean publicada;
 
+    @OneToMany(mappedBy = "encuesta",  cascade = CascadeType.ALL,  orphanRemoval = true)
+    private List<Pregunta> preguntas = new ArrayList<>();
+
     @PrePersist
     public void prePersistir() {
         this.fechaCreacion = LocalDateTime.now();
     }
     public Encuesta() {}
+
+    // Método helper para mantener la consistencia bidireccional
+    public void addPregunta(Pregunta pregunta) {
+        preguntas.add(pregunta);
+        pregunta.setEncuesta(this);
+    }
+
+    public void removePregunta(Pregunta pregunta) {
+        preguntas.remove(pregunta);
+        pregunta.setEncuesta(null);
+    }
 
     public Long getEncuestaId() {
         return encuestaId;

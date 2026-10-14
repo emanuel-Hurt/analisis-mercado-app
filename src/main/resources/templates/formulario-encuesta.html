@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout('Nueva Encuesta', ~{::content})}">
+<body>
+<div th:fragment="content" class="dashboard">
+
+    <section class="card card--col-12">
+        <h2 class="card__title">Diseñador de Encuestas</h2>
+        <h3 class="card__subtitle">Complete la información general y configure las preguntas del instrumento de recolección.</h3>
+
+        <form class="form" th:action="@{/encuestas/nueva-encuesta}" th:object="${encuestaNueva}" method="POST">
+
+            <!-- Datos Generales de la Encuesta -->
+            <div class="form__group">
+                <label class="form__label" for="titulo">Título de la Encuesta</label>
+                <input type="text" id="titulo" name="titulo" class="form__input" placeholder="Ej. Encuesta de Opinión a Titulados de Ingeniería de Sistemas" th:field="*{nombre}" required>
+            </div>
+
+            <div class="form__group">
+                <label class="form__label" for="descripcion">Descripción</label>
+                <textarea id="descripcion" name="descripcion" class="form__textarea" placeholder="Breve descripción del propósito de la encuesta..." th:field="*{descripcion}"></textarea>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 10px 0;">
+
+            <!-- Sección de Preguntas Dinámicas -->
+            <div class="survey-builder">
+                <div class="survey-builder__header">
+                    <h3 class="card__title" style="margin: 0;">Preguntas de la Encuesta</h3>
+                    <button type="button" id="btn-agregar-pregunta" class="btn btn--secondary">+ Agregar Pregunta</button>
+                </div>
+
+                <!-- Contenedor donde se insertarán dinámicamente las preguntas -->
+                <div id="contenedor-preguntas" style="display: flex; flex-direction: column; gap: 12px;">
+                    <!-- Aquí se inyectarán las tarjetas de preguntas mediante JS -->
+                </div>
+            </div>
+
+            <!-- Botones de Acción Global -->
+            <div class="form-actions">
+                <a th:href="@{/encuestas}" class="btn btn--secondary">Cancelar</a>
+                <button type="submit" class="btn btn--primary">Guardar Encuesta</button>
+            </div>
+
+        </form>
+    </section>
+
+    <!-- Script estructurado para la adición dinámica de preguntas -->
+    <script>
+        document.getElementById('btn-agregar-pregunta').addEventListener('click', function() {
+            const contenedor = document.getElementById('contenedor-preguntas');
+            const index = contenedor.children.length;
+
+            const tarjeta = document.createElement('div');
+            tarjeta.className = 'question-card';
+            tarjeta.innerHTML = `
+                    <div class="question-card__grid">
+                        <div class="form__group">
+                            <label class="form__label">Pregunta ${index + 1}</label>
+                            <input type="text" name="preguntas[${index}].texto" class="form__input" placeholder="Escriba el enunciado de la pregunta..." required>
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label">Tipo de Pregunta</label>
+                            <select name="preguntas[${index}].tipo" class="form__select select-tipo" data-index="${index}">
+                                <option value="OPCION_UNICA">Opción única</option>
+                                <option value="LIKERT">Escala Likert (1-4)</option>
+                                <option value="ABIERTA">Abierta</option>
+                                <option value="MULTIPLE">Elección múltiple</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="question-card__options" id="opciones-container-${index}">
+                        <span style="font-size: 11px; color: #718096;">Opciones predeterminadas para opción única:</span>
+                        <input type="text" class="form__input" placeholder="Opción 1 (Ej. Maestría)" style="padding: 6px 10px; font-size: 12px;">
+                    </div>
+                    <div class="question-card__footer">
+                        <button type="button" class="btn btn--danger btn-eliminar-pregunta">Eliminar pregunta</button>
+                    </div>
+                `;
+
+            // Evento para eliminar la tarjeta de pregunta
+            tarjeta.querySelector('.btn-eliminar-pregunta').addEventListener('click', function() {
+                tarjeta.remove();
+            });
+
+            contenedor.appendChild(tarjeta);
+        });
+    </script>
+</div>
+</body>
+</html>

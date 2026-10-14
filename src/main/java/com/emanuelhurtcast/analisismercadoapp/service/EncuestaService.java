@@ -1,5 +1,8 @@
 package com.emanuelhurtcast.analisismercadoapp.service;
 
+import com.emanuelhurtcast.analisismercadoapp.dto.EncuestaRequest;
+import com.emanuelhurtcast.analisismercadoapp.dto.EncuestaResponse;
+import com.emanuelhurtcast.analisismercadoapp.mapper.EncuestaMapper;
 import com.emanuelhurtcast.analisismercadoapp.model.Encuesta;
 import com.emanuelhurtcast.analisismercadoapp.repository.EncuestaRepository;
 import org.springframework.stereotype.Service;
@@ -11,13 +14,16 @@ import java.util.Optional;
 public class EncuestaService {
 
     private final EncuestaRepository encuestaRepository;
+    private final EncuestaMapper encuestaMapper;
 
-    public EncuestaService(EncuestaRepository encuestaRepository) {
+    public EncuestaService(EncuestaRepository encuestaRepository, EncuestaMapper encuestaMapper) {
         this.encuestaRepository = encuestaRepository;
+        this.encuestaMapper = encuestaMapper;
     }
 
-    public Encuesta crearEncuesta(Encuesta encuesta) {
-        return encuestaRepository.save(encuesta);
+    public EncuestaResponse crearEncuesta(EncuestaRequest encuestaRequest) {
+        Encuesta encuesta = encuestaMapper.toEntity(encuestaRequest);
+        return encuestaMapper.toResponse(encuestaRepository.save(encuesta));
     }
 
     public List<Encuesta> listarEncuestas() {

@@ -13,16 +13,12 @@ public class Pregunta {
     private String pregunta;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "encuestaId", nullable = false)
+    @JoinColumn(name = "encuesta_id", nullable = false)
     private Encuesta encuesta;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipoId", nullable = false)
     private TipoPregunta tipoPregunta;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "variableId", nullable = false)
-    private VariableDeEstudio variableDeEstudio;
 
     public Pregunta() {
     }
@@ -59,11 +55,4 @@ public class Pregunta {
         this.tipoPregunta = tipoPregunta;
     }
 
-    public VariableDeEstudio getVariableDeEstudio() {
-        return variableDeEstudio;
-    }
-
-    public void setVariableDeEstudio(VariableDeEstudio variableDeEstudio) {
-        this.variableDeEstudio = variableDeEstudio;
-    }
 }
