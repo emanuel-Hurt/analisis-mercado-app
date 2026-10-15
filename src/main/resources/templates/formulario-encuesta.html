@@ -37,14 +37,14 @@
 
             <!-- Botones de Acción Global -->
             <div class="form-actions">
-                <a th:href="@{/encuestas}" class="btn btn--secondary">Cancelar</a>
+                <a th:href="@{/encuestas/lista-encuestas}" class="btn btn--secondary">Cancelar</a>
                 <button type="submit" class="btn btn--primary">Guardar Encuesta</button>
             </div>
 
         </form>
     </section>
 
-    <!-- Script estructurado para la adición dinámica de preguntas -->
+    <!-- Script estructurado para la adición dinámica de preguntas y tipos de opciones -->
     <script>
         document.getElementById('btn-agregar-pregunta').addEventListener('click', function() {
             const contenedor = document.getElementById('contenedor-preguntas');
@@ -53,31 +53,90 @@
             const tarjeta = document.createElement('div');
             tarjeta.className = 'question-card';
             tarjeta.innerHTML = `
-                    <div class="question-card__grid">
-                        <div class="form__group">
-                            <label class="form__label">Pregunta ${index + 1}</label>
-                            <input type="text" name="preguntas[${index}].texto" class="form__input" placeholder="Escriba el enunciado de la pregunta..." required>
+            <div class="question-card__grid">
+                <div class="form__group">
+                    <label class="form__label">Pregunta ${index + 1}</label>
+                    <input type="text" name="preguntas[${index}].texto" class="form__input" placeholder="Escriba el enunciado de la pregunta..." required>
+                </div>
+                <div class="form__group">
+                    <label class="form__label">Tipo de Pregunta</label>
+                    <select name="preguntas[${index}].tipo" class="form__select select-tipo" data-index="${index}">
+                        <option value="OPCION_UNICA">Opción única</option>
+                        <option value="MULTIPLE">Elección múltiple</option>
+                        <option value="LIKERT">Escala Likert (1-4)</option>
+                        <option value="ABIERTA">Abierta</option>
+                    </select>
+                </div>
+            </div>
+            <div class="question-card__options" id="opciones-container-${index}">
+                <!-- Contenido dinámico según el tipo -->
+            </div>
+            <div class="question-card__footer">
+                <button type="button" class="btn btn--danger btn-eliminar-pregunta">Eliminar pregunta</button>
+            </div>
+        `;
+
+            const selectTipo = tarjeta.querySelector('.select-tipo');
+            const opcionesContainer = tarjeta.querySelector(`#opciones-container-${index}`);
+
+            // Función para renderizar las opciones según el tipo seleccionado
+            function actualizarOpciones() {
+                const tipo = selectTipo.value;
+                opcionesContainer.innerHTML = '';
+
+                if (tipo === 'OPCION_UNICA' || tipo === 'MULTIPLE') {
+                    opcionesContainer.innerHTML = `
+                    <span class="option-help-text">Opciones de respuesta:</span>
+                    <div class="option-list" id="lista-opciones-${index}">
+                        <div class="option-item">
+                            <input type="text" name="preguntas[${index}].opciones[0]" class="option-item__input" placeholder="Opción 1" required>
                         </div>
-                        <div class="form__group">
-                            <label class="form__label">Tipo de Pregunta</label>
-                            <select name="preguntas[${index}].tipo" class="form__select select-tipo" data-index="${index}">
-                                <option value="OPCION_UNICA">Opción única</option>
-                                <option value="LIKERT">Escala Likert (1-4)</option>
-                                <option value="ABIERTA">Abierta</option>
-                                <option value="MULTIPLE">Elección múltiple</option>
-                            </select>
-                        </div>
                     </div>
-                    <div class="question-card__options" id="opciones-container-${index}">
-                        <span style="font-size: 11px; color: #718096;">Opciones predeterminadas para opción única:</span>
-                        <input type="text" class="form__input" placeholder="Opción 1 (Ej. Maestría)" style="padding: 6px 10px; font-size: 12px;">
-                    </div>
-                    <div class="question-card__footer">
-                        <button type="button" class="btn btn--danger btn-eliminar-pregunta">Eliminar pregunta</button>
-                    </div>
+                    <button type="button" class="btn btn--secondary" id="btn-add-option-${index}" style="margin-top: 6px; padding: 6px 12px; font-size: 11px; width: fit-content;">+ Agregar opción</button>
                 `;
 
-            // Evento para eliminar la tarjeta de pregunta
+                    // Lógica para agregar más opciones dinámicamente
+                    const btnAddOption = opcionesContainer.querySelector(`#btn-add-option-${index}`);
+                    const listaOpciones = opcionesContainer.querySelector(`#lista-opciones-${index}`);
+
+                    btnAddOption.addEventListener('click', function() {
+                        const opcionIndex = listaOpciones.children.length;
+                        const item = document.createElement('div');
+                        item.className = 'option-item';
+                        item.innerHTML = `
+                        <input type="text" name="preguntas[${index}].opciones[${opcionIndex}]" class="option-item__input" placeholder="Opción ${opcionIndex + 1}" required>
+                        <button type="button" class="btn btn--danger-subtle btn-eliminar-opcion">✕</button>
+                    `;
+                        item.querySelector('.btn-eliminar-opcion').addEventListener('click', function() {
+                            item.remove();
+                        });
+                        listaOpciones.appendChild(item);
+                    });
+
+                } else if (tipo === 'LIKERT') {
+                    opcionesContainer.innerHTML = `
+                    <span class="option-help-text">Escala Likert configurada automáticamente (1 a 4 puntos):</span>
+                    <div style="display: flex; gap: 12px; font-size: 12px; color: #4a5568; background: #ffffff; padding: 8px; border: 1px solid #e2e8f0; border-radius: 4px;">
+                        <span>1. Totalmente en desacuerdo</span>
+                        <span>2. En desacuerdo</span>
+                        <span>3. De acuerdo</span>
+                        <span>4. Totalmente de acuerdo</span>
+                    </div>
+                `;
+                } else if (tipo === 'ABIERTA') {
+                    opcionesContainer.innerHTML = `
+                    <span class="option-help-text">Pregunta de respuesta abierta (El usuario escribirá texto libre, no requiere opciones).</span>
+                `;
+                }
+            }
+
+            // Ejecutar al cambiar el select
+            selectTipo.addEventListener('change', actualizarOpciones);
+
+            // Renderizar por defecto al crear la tarjeta (Inicia en OPCION_UNICA)
+            actualizarOpciones();
+
+            // Evento para eliminar la tarjeta de pregunta completa
             tarjeta.querySelector('.btn-eliminar-pregunta').addEventListener('click', function() {
                 tarjeta.remove();
             });

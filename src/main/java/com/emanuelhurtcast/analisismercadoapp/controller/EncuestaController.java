@@ -2,6 +2,8 @@ package com.emanuelhurtcast.analisismercadoapp.controller;
 
 import com.emanuelhurtcast.analisismercadoapp.dto.EncuestaRequest;
 import com.emanuelhurtcast.analisismercadoapp.dto.EncuestaResponse;
+import com.emanuelhurtcast.analisismercadoapp.dto.PreguntaRequest;
+import com.emanuelhurtcast.analisismercadoapp.dto.RespuestaRequest;
 import com.emanuelhurtcast.analisismercadoapp.service.EncuestaService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -51,7 +53,17 @@ public class EncuestaController {
 
         // Lo guardamos
         EncuestaResponse encuestaResponse = encuestaService.crearEncuesta(encuesta);
-        // Aun no lo hace, pero EncuestaResponse ya debe traer sus preguntas, ESTE AJUSTE EN EL SERVICE
+        // Aun no lo hace pero... EncuestaResponse ya debe traer sus preguntas, ESTE AJUSTE EN EL SERVICE
+
+        System.out.println(encuesta.getNombre());
+        for (PreguntaRequest preguntaRequest : encuesta.getPreguntas()) {
+            System.out.println(preguntaRequest.getTexto());
+            System.out.println("Su tipo: " + preguntaRequest.getTipo());
+            System.out.println("ESTAS SON SUS OPCIONES:");
+            for (String opcion: preguntaRequest.getOpciones()) {
+                System.out.println(opcion);
+            }
+        }
 
         model.addAttribute("encuesta",encuestaResponse);
 

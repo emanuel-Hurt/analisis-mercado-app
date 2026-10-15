@@ -425,3 +425,40 @@ body {
     gap: 12px;
     margin-top: 10px;
 }
+
+/* ESTILOS PARA LAS OPCIONES DE LAS PREGUNTAS DINÁMICAS */
+
+/* =================================================================
+   ELEMENTOS DINÁMICOS DE OPCIONES (.option-item)
+   ========================================================================== */
+.option-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.option-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.option-item__input {
+    flex: 1;
+    padding: 6px 10px;
+    font-size: 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    outline: none;
+}
+
+.option-item__input:focus {
+    border-color: #2b70f6;
+}
+
+.option-help-text {
+    font-size: 11px;
+    color: #718096;
+    margin-bottom: 4px;
+}

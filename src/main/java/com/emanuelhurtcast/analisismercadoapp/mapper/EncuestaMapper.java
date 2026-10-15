@@ -13,7 +13,6 @@ public class EncuestaMapper {
         Encuesta encuestaEntity = new Encuesta();
         encuestaEntity.setNombre(encuestaRequest.getNombre());
         encuestaEntity.setDescripcion(encuestaRequest.getDescripcion());
-
         // Ver cómo agregar las preguntas
 
         return  encuestaEntity;
