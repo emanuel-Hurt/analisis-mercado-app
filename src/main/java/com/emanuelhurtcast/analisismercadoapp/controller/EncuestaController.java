@@ -34,6 +34,8 @@ public class EncuestaController {
 
         model.addAttribute("encuesta", encuestaResponse);
 
+        model.addAttribute("activeMenu", "encuestas");
+
         return "encuestas";
     }
 

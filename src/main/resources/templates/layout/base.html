@@ -17,16 +17,16 @@
         </div>
         <ul class="sidebar__nav">
             <li class="sidebar__item">
-                <a href="#" class="sidebar__link">Inicio</a>
+                <a href="#" class="sidebar__link" th:classappend="${activeMenu == 'inicio'} ? 'sidebar__link--active'">Inicio</a>
             </li>
             <li class="sidebar__item">
-                <a href="/encuestas/lista-encuestas" class="sidebar__link">Encuestas</a>
+                <a href="/encuestas/lista-encuestas" class="sidebar__link" th:classappend="${activeMenu == 'encuestas'} ? 'sidebar__link--active'">Encuestas</a>
             </li>
             <li class="sidebar__item">
-                <a href="#" class="sidebar__link">Datos</a>
+                <a href="#" class="sidebar__link" th:classappend="${activeMenu == 'datos'} ? 'sidebar__link--active'">Datos</a>
             </li>
             <li class="sidebar__item">
-                <a href="#" class="sidebar__link sidebar__link--active">Analisis de Datos</a>
+                <a href="#" class="sidebar__link" th:classappend="${activeMenu == 'analisisDatos'} ? 'sidebar__link--active'">Analisis de Datos</a>
             </li>
         </ul>
     </div>
