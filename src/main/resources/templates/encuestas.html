@@ -15,50 +15,33 @@
         <h2 class="card__title">Listado de Encuestas Creadas</h2>
         <h3 class="card__subtitle">Administre y visualice los instrumentos de recolección de datos disponibles en el sistema.</h3>
 
-        <div class="table-container" th:Object="${encuesta}">
+        <div class="table-container" >
             <table class="data-table">
                 <thead>
                 <tr>
                     <th>Título de la Encuesta</th>
-                    <th>Variables Asociadas</th>
                     <th>Fecha de Creación</th>
                     <th>Estado</th>
                     <th class="survey-actions">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
-                <!-- Fila de ejemplo 1 -->
-                <tr>
+                <!-- Fila  -->
+                <tr th:each="encuesta: ${encuestas}">
                     <td>
-                        <a th:href="@{/encuestas/detalle(id=1)}" class="survey-link" th:text="*{nombre}">
+                        <a th:href="@{/encuestas/detalle(id=1)}" class="survey-link" th:text="${encuesta.nombre}">
 
                         </a>
                     </td>
-                    <td>Empleabilidad, Formación, Financiamiento</td>
-                    <td>10/01/2026</td>
-                    <td>Activa</td>
+                    <td th:text="${encuesta.fechaCreacion}"></td>
+                    <td th:text="${encuesta.publicado}"></td>
                     <td class="survey-actions">
                         <a th:href="@{/encuestas/eliminar(id=1)}" class="btn btn--danger-subtle">
                             Eliminar
                         </a>
                     </td>
                 </tr>
-                <!-- Fila de ejemplo 2 -->
-                <tr>
-                    <td>
-                        <a th:href="@{/encuestas/detalle(id=2)}" class="survey-link">
-                            Evaluación de Competencias Profesionales (Empleadores)
-                        </a>
-                    </td>
-                    <td>Brechas de Competencias, Soft Skills</td>
-                    <td>15/02/2026</td>
-                    <td>Borrador</td>
-                    <td class="survey-actions">
-                        <a th:href="@{/encuestas/eliminar(id=2)}" class="btn btn--danger-subtle">
-                            Eliminar
-                        </a>
-                    </td>
-                </tr>
+
                 </tbody>
             </table>
         </div>

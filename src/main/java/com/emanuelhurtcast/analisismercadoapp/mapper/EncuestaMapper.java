@@ -23,6 +23,8 @@ public class EncuestaMapper {
         EncuestaResponse encuestaResponse = new EncuestaResponse();
         encuestaResponse.setNombre(encuesta.getNombre());
         encuestaResponse.setDescripcion(encuesta.getDescripcion());
+        encuestaResponse.setFechaCreacion(encuesta.getFechaCreacion());
+        encuestaResponse.setPublicado(encuesta.isPublicada());
 
         return encuestaResponse;
     }

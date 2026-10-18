@@ -8,6 +8,7 @@ import com.emanuelhurtcast.analisismercadoapp.model.Encuesta;
 import com.emanuelhurtcast.analisismercadoapp.repository.EncuestaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,8 +41,14 @@ public class EncuestaService {
         return encuestaMapper.toResponse(encuestaRepository.save(encuesta));
     }
 
-    public List<Encuesta> listarEncuestas() {
-        return encuestaRepository.findAll();
+    public List<EncuestaResponse> listarEncuestas() {
+
+        List<Encuesta> encuestas = encuestaRepository.findAll();
+
+        return encuestas.stream()
+                .map(encuestaMapper::toResponse)
+                .toList();
+
     }
 
     public Optional<Encuesta> buscarEncuestaPorId(Long idEncuesta) {

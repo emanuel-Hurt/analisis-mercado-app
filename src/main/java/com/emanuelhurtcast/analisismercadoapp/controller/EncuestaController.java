@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("/encuestas")
 public class EncuestaController {
@@ -27,12 +30,14 @@ public class EncuestaController {
     public String verEncuestas(Model model) {
 
         // MANDAR UNA LISTA DE OBJETO ENCUESTA
-        EncuestaResponse encuestaResponse = new EncuestaResponse();
-        encuestaResponse.setNombre("Encuesta de Prueba");
-        encuestaResponse.setDescripcion("encuesta creada con fines de prueba");
-        encuestaResponse.setPublicado(false);
+//        EncuestaResponse encuestaResponse = new EncuestaResponse();
+//        encuestaResponse.setNombre("Encuesta de Prueba");
+//        encuestaResponse.setDescripcion("encuesta creada con fines de prueba");
+//        encuestaResponse.setPublicado(false);
 
-        model.addAttribute("encuesta", encuestaResponse);
+        List<EncuestaResponse> encuestasResponse = encuestaService.listarEncuestas();
+
+        model.addAttribute("encuestas", encuestasResponse);
 
         model.addAttribute("activeMenu", "encuestas");
 
@@ -44,6 +49,7 @@ public class EncuestaController {
 
         EncuestaResponse encuestaResponse = new EncuestaResponse();
         model.addAttribute("encuestaNueva", encuestaResponse);
+        model.addAttribute("activeMenu", "encuestas");
         return "formulario-encuesta";
     }
 
@@ -68,6 +74,8 @@ public class EncuestaController {
         }
 
         model.addAttribute("encuesta",encuestaResponse);
+
+        model.addAttribute("activeMenu", "encuestas");
 
         return "encuestas";
     }
