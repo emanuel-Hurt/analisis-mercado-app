@@ -14,10 +14,10 @@ public class Respuesta {
     private String contenido;
 
     @Column(nullable = false)
-    private int frecuencia;
+    private int frecuencia = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "preguntaId", nullable = false)
+    @JoinColumn(name = "pregunta_id", nullable = false)
     private Pregunta pregunta;
 
     public Respuesta() {

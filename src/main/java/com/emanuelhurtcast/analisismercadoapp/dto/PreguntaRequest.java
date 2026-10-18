@@ -1,26 +1,38 @@
 package com.emanuelhurtcast.analisismercadoapp.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PreguntaRequest {
 
-    private String pregunta;
-    private String tipoPregunta;
+    private String texto;
+    private String tipo;
+    private List<String> opciones = new ArrayList<>();
 
     public PreguntaRequest() {
     }
 
-    public String getPregunta() {
-        return pregunta;
+    public String getTexto() {
+        return texto;
     }
 
-    public void setPregunta(String pregunta) {
-        this.pregunta = pregunta;
+    public void setTexto(String texto) {
+        this.texto = texto;
     }
 
-    public String getTipoPregunta() {
-        return tipoPregunta;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setTipoPregunta(String tipoPregunta) {
-        this.tipoPregunta = tipoPregunta;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public List<String> getOpciones() {
+        return opciones;
+    }
+
+    public void setOpciones(List<String> opciones) {
+        this.opciones = opciones;
     }
 }

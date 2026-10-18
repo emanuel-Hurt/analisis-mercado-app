@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout('Analisis de Datos', ~{::content})}">
+<body>
+<div th:fragment="content" class="dashboard">
+
+    <!-- Barra de acciones superior -->
+    <div class="action-bar">
+        <a th:href="@{/encuestas/formulario-encuesta}" class="btn btn--primary">
+            + Nueva Encuesta
+        </a>
+    </div>
+
+    <!-- Tarjeta contenedora de la lista de encuestas -->
+    <section class="card card--col-12">
+        <h2 class="card__title">Listado de Encuestas Creadas</h2>
+        <h3 class="card__subtitle">Administre y visualice los instrumentos de recolección de datos disponibles en el sistema.</h3>
+
+        <div class="table-container" >
+            <table class="data-table">
+                <thead>
+                <tr>
+                    <th>Título de la Encuesta</th>
+                    <th>Fecha de Creación</th>
+                    <th>Estado</th>
+                    <th class="survey-actions">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Fila  -->
+                <tr th:each="encuesta: ${encuestas}">
+                    <td>
+                        <a th:href="@{/encuestas/detalle(id=1)}" class="survey-link" th:text="${encuesta.nombre}">
+
+                        </a>
+                    </td>
+                    <td th:text="${encuesta.fechaCreacion}"></td>
+                    <td th:text="${encuesta.publicado}"></td>
+                    <td class="survey-actions">
+                        <a th:href="@{/encuestas/eliminar(id=1)}" class="btn btn--danger-subtle">
+                            Eliminar
+                        </a>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</div>
+</body>
+</html>
