@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/base :: layout('Carga de Datos', ~{::content})}">
+<body>
+<div th:fragment="content" class="dashboard">
+
+    <!-- Sección Principal del Formulario -->
+    <section class="card card--col-12">
+        <h2 class="card__title">Cargar Archivo de Datos</h2>
+        <h3 class="card__subtitle">Seleccione un archivo en formato CSV o Excel (.xlsx, .xls) para procesarlo en el sistema.</h3>
+
+        <form th:action="@{/upload}" method="post" enctype="multipart/form-data" class="file-upload">
+
+            <!-- Zona visual contenedora del input nativo -->
+            <div class="file-upload__dropzone">
+                <span class="file-upload__icon">📁</span>
+                <span class="file-upload__text">Haga clic aquí y seleccione su archivo CSV / Excel</span>
+                <span class="file-upload__hint">Formatos compatibles: .csv, .xlsx, .xls</span>
+
+                <!-- Input nativo oculto visualmente pero activo y funcional -->
+                <input type="file" name="file" class="file-upload__input" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" required />
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="file-upload__footer">
+                <button type="submit" class="btn btn--primary">
+                    Procesar Archivo
+                </button>
+            </div>
+
+        </form>
+    </section>
+
+</div>
+</body>
+</html>

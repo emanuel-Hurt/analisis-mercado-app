@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout('Presentación y Análisis Dinámico', ~{::content})}">
+<body>
+<div th:fragment="content" class="dashboard">
+
+    <!-- 1. VISTA PREVIA: PRIMERAS 10 FILAS (Con scroll superior y vertical) -->
+    <section class="card card--col-12">
+        <h2 class="card__title">Vista Previa de Datos Cargados (Primeras 10 filas)</h2>
+        <h3 class="card__subtitle">Explore las primeras filas del dataset antes de realizar consultas interactivas abajo.</h3>
+
+        <div class="table-wrapper">
+            <div class="scroll-top" id="scrollTop">
+                <div class="scroll-top__inner" id="scrollTopInner"></div>
+            </div>
+            <div class="table-container" id="tableContainer">
+                <table class="data-table" id="dataTable">
+                    <thead>
+                    <tr>
+                        <th th:each="col : ${columnas}" th:text="${col}">Columna</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="fila : ${filasDiez}">
+                        <td th:each="col : ${columnas}" th:text="${fila.get(col)}">Valor</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. SECCIÓN DE ANÁLISIS INTERACTIVO (ESTILO NOTEBOOK) -->
+    <section class="card card--col-12">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div>
+                <h2 class="card__title" style="margin: 0;">Entorno de Análisis Interactivo (Notebook)</h2>
+                <h3 class="card__subtitle" style="margin: 0;">Agregue bloques analíticos para calcular métricas o generar gráficos bajo demanda.</h3>
+            </div>
+
+        </div>
+
+        <!-- Contenedor donde se inyectarán dinámicamente los bloques -->
+        <div id="notebookContainer" style="display: flex; flex-direction: column; gap: 20px; margin-top: 15px;"></div>
+
+        <button type="button" class="btn btn--primary" id="addBlockBtn" style="padding: 8px 16px; font-weight: bold;">+ Agregar Bloque de Análisis</button>
+    </section>
+
+    <!-- Plantilla oculta que contiene el diseño visual del bloque -->
+    <template id="bloque-template">
+        <div class="card notebook-card">
+            <div class="notebook-card__header">
+                <h4 class="notebook-card__title">⚡ Bloque de Análisis Estadístico</h4>
+                <button type="button" class="btn-delete">Eliminar</button>
+            </div>
+            <div class="notebook-card__form-row">
+                <div class="notebook-card__field">
+                    <label class="notebook-card__label">Operación:</label>
+                    <select class="op-select notebook-card__select">
+                        <option value="media">Media aritmética</option>
+                        <option value="mediana">Mediana</option>
+                        <option value="desviacion">Desviación estándar</option>
+                        <option value="frecuenciaAbsoluta">Distribución de frecuencia absoluta</option>
+                        <option value="frecuenciaRelativa">Distribución de frecuencia relativa</option>
+                    </select>
+                </div>
+
+                <!-- Campo para el Índice de la Columna -->
+                <div class="notebook-card__field notebook-card__field--small">
+                    <label class="notebook-card__label">Índice Columna (#):</label>
+                    <input type="number"
+                           class="col-index-input notebook-card__input"
+                           placeholder="Ej. 0, 1, 2"
+                           min="0" />
+                </div>
+
+                <div class="notebook-card__action">
+                    <button type="button" class="btn btn--primary execute-btn">Ejecutar</button>
+                </div>
+            </div>
+
+            <!-- Área de Resultados dentro del <template> -->
+            <div class="result-area notebook-card__result" style="display: none;"></div>
+
+        </div>
+    </template>
+
+    <script th:src="@{/js/bloque-analisis.js}"></script>
+
+</div>
+
+
+</body>
+</html>
